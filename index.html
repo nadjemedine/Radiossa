@@ -299,10 +299,10 @@
     <script>
         // Data
         const products = [
-            { id: 1, name: "Veste", price: 5800, img: "image1.png", sizes: ["39", "40", "41", "42", "43", "44"], description: "• Design élégant avec ceinture\n• Tissu de haute qualité\n• Motif raffiné" },
-            { id: 2, name: "Veste", price: 5800, img: "image2.png", sizes: ["39", "40", "41", "42", "43", "44"], description: "• Design élégant avec ceinture\n• Tissu de haute qualité\n• Motif raffiné" },
-            { id: 3, name: "Veste", price: 5800, img: "image3.png", sizes: ["39", "40", "41", "42", "43", "44"], description: "• Design élégant avec ceinture\n• Tissu de haute qualité\n• Motif raffiné" },
-            { id: 4, name: "Veste", price: 5800, img: "image4.png", sizes: ["39", "40", "41", "42", "43", "44"], description: "• Design élégant avec ceinture\n• Tissu de haute qualité\n• Motif raffiné" }
+            { id: 1, name: "Veste", price: 5800, img: "image1.png", sizes: ["Taille 1 : 36", "Taille 1 : 38", "Taille 1 : 40", "Taille 2 : 42", "Taille 2 : 44", "Taille 2 : 46", "Taille 2 : 48"], description: "• Design élégant avec ceinture\n• Tissu de haute qualité\n• Motif raffiné" },
+            { id: 2, name: "Veste", price: 5800, img: "image2.png", sizes: ["Taille 1 : 36", "Taille 1 : 38", "Taille 1 : 40", "Taille 2 : 42", "Taille 2 : 44", "Taille 2 : 46", "Taille 2 : 48"], description: "• Design élégant avec ceinture\n• Tissu de haute qualité\n• Motif raffiné" },
+            { id: 3, name: "Veste", price: 5800, img: "image3.png", sizes: ["Taille 1 : 36", "Taille 1 : 38", "Taille 1 : 40", "Taille 2 : 42", "Taille 2 : 44", "Taille 2 : 46", "Taille 2 : 48"], description: "• Design élégant avec ceinture\n• Tissu de haute qualité\n• Motif raffiné" },
+            { id: 4, name: "Veste", price: 5800, img: "image4.png", sizes: ["Taille 1 : 36", "Taille 1 : 38", "Taille 1 : 40", "Taille 2 : 42", "Taille 2 : 44", "Taille 2 : 46", "Taille 2 : 48"], description: "• Design élégant avec ceinture\n• Tissu de haute qualité\n• Motif raffiné" }
         ];
 
         const wilayas = [
@@ -380,9 +380,27 @@
 
         function renderModalSizes(sizes) {
             const sizesDiv = document.getElementById('modal-sizes');
-            sizesDiv.innerHTML = sizes.map(s => `
-                <div onclick="selectSize('${s}', this)" class="size-option px-4 py-2 border ${selectedSizeModal === s ? 'border-[#625673] bg-[#625673] text-white' : 'border-zinc-200 text-zinc-700'} rounded-lg text-sm font-bold cursor-pointer transition-all active:scale-90">
-                    ${s}
+
+            // Group sizes by category
+            const grouped = {};
+            sizes.forEach(s => {
+                const [cat, val] = s.split(' : ');
+                if (!grouped[cat]) grouped[cat] = [];
+                grouped[cat].push({ full: s, label: val });
+            });
+
+            sizesDiv.className = "flex flex-col gap-6"; // Vertical list of groups
+            sizesDiv.innerHTML = Object.keys(grouped).map(cat => `
+                <div class="space-y-3">
+                    <p class="text-[11px] font-black uppercase tracking-widest text-[#625673] opacity-60">${cat}</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${grouped[cat].map(item => `
+                            <div onclick="selectSize('${item.full}', this)" 
+                                 class="size-option px-5 py-2.5 border ${selectedSizeModal === item.full ? 'border-[#625673] bg-[#625673] text-white shadow-lg' : 'border-zinc-200 text-zinc-700 bg-white/50'} rounded-xl text-sm font-bold cursor-pointer transition-all duration-300 hover:scale-105 active:scale-90">
+                                ${item.label}
+                            </div>
+                        `).join('')}
+                    </div>
                 </div>
             `).join('');
         }
