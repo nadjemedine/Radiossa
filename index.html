@@ -235,7 +235,7 @@
     <div id="product-modal"
         class="fixed inset-0 z-[100] hidden flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-opacity">
         <div
-            class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-300">
+            class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl shadow-2xl animate-in slide-in-from-bottom duration-300 max-h-[95vh] overflow-y-auto">
             <div class="relative h-80 sm:h-96">
                 <button onclick="closeModal()"
                     class="absolute top-4 left-4 z-10 bg-white/80 p-2 rounded-full shadow-lg">
@@ -389,14 +389,14 @@
                 grouped[cat].push({ full: s, label: val });
             });
 
-            sizesDiv.className = "flex flex-col gap-6"; // Vertical list of groups
+            sizesDiv.className = "flex flex-col gap-6 pb-4"; // Vertical list of groups
             sizesDiv.innerHTML = Object.keys(grouped).map(cat => `
                 <div class="space-y-3">
                     <p class="text-[11px] font-black uppercase tracking-widest text-[#625673] opacity-60">${cat}</p>
                     <div class="flex flex-wrap gap-2">
                         ${grouped[cat].map(item => `
                             <div onclick="selectSize('${item.full}', this)" 
-                                 class="size-option px-5 py-2.5 border ${selectedSizeModal === item.full ? 'border-[#625673] bg-[#625673] text-white shadow-lg' : 'border-zinc-200 text-zinc-700 bg-white/50'} rounded-xl text-sm font-bold cursor-pointer transition-all duration-300 hover:scale-105 active:scale-90">
+                                 class="size-option px-5 py-2.5 border-2 ${selectedSizeModal === item.full ? 'border-[#625673] text-[#625673] bg-white' : 'border-zinc-100 text-zinc-500 bg-white'} rounded-xl text-sm font-bold cursor-pointer transition-all duration-300 active:scale-90">
                                 ${item.label}
                             </div>
                         `).join('')}
@@ -408,11 +408,11 @@
         function selectSize(size, el) {
             selectedSizeModal = size;
             document.querySelectorAll('.size-option').forEach(opt => {
-                opt.classList.remove('border-[#625673]', 'bg-[#625673]', 'text-white');
-                opt.classList.add('border-zinc-200', 'text-zinc-700');
+                opt.classList.remove('border-[#625673]', 'text-[#625673]');
+                opt.classList.add('border-zinc-100', 'text-zinc-500');
             });
-            el.classList.add('border-[#625673]', 'bg-[#625673]', 'text-white');
-            el.classList.remove('border-zinc-200', 'text-zinc-700');
+            el.classList.add('border-[#625673]', 'text-[#625673]');
+            el.classList.remove('border-zinc-100', 'text-zinc-500');
         }
 
         function closeModal() {
